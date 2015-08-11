@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * Created by rohit on 8/9/15.
  */
 
-public class User {
+public class User implements Comparable{
 
     String name;
     ArrayList<User> friends;
@@ -36,4 +36,8 @@ public class User {
         return ret;
     }
 
+    @Override
+    public int compareTo(Object another) {
+        return name.compareTo(((User)another).name);
+    }
 }
