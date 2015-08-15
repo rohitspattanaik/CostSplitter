@@ -7,8 +7,8 @@ import android.util.Pair;
  */
 public class UserBalancePair implements Comparable {
 
-    User user;
-    Double balance;
+    private User user;
+    private Double balance;
 
     UserBalancePair() {
         user = null;

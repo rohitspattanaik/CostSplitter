@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 public class User implements Comparable{
 
-    String name;
-    ArrayList<User> friends;
+    private String name;
+    private ArrayList<User> friends;
 
     public User() {
         name = "NULL";
@@ -34,6 +34,15 @@ public class User implements Comparable{
             ret = false;
         }
         return ret;
+    }
+
+    //for testing purposes only
+    public ArrayList<User> getFriends() {
+        return friends;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
