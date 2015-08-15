@@ -49,4 +49,9 @@ public class User implements Comparable{
     public int compareTo(Object another) {
         return name.compareTo(((User)another).name);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

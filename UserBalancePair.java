@@ -46,5 +46,10 @@ public class UserBalancePair implements Comparable {
         }
     }
 
+    @Override
+    public String toString() {
+        return user.toString() + " : " + balance;
+    }
+
 
 }

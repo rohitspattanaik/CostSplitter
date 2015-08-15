@@ -59,6 +59,10 @@ public class Lobby {
         return true;
     }
 
+    public ArrayList<UserBalancePair> getUserBalanceList() {
+        return userBalanceList;
+    }
+
     public boolean acceptTransaction(Transaction transaction) {
         boolean ret = false;
 
