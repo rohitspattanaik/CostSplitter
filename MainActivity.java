@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     ListView userBalanceList;
 
     public static final String EXTRA_USER_BALANCE_LIST = "personal.rohit.costsplitter.USER_BALANCE_LIST";
+    static final int ADD_USER_ACTIVITY = 1;
 
     //Debugging Stuff
     String debugTag = "RSP";
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     public void addUser(View view) {
         Intent intent = new Intent(this, AddNewUserActivity.class);
         intent.putParcelableArrayListExtra(EXTRA_USER_BALANCE_LIST, testLobby.getUserBalanceList());
-        startActivity(intent);
+        startActivityForResult(intent, ADD_USER_ACTIVITY);
     }
 
     @Override
@@ -72,5 +73,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 }
