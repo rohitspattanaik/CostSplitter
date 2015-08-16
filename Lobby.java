@@ -30,10 +30,21 @@ public class Lobby {
         return ret;
     }
 
-    public int getUserIndex(User u) {
+    private int getUserIndex(User u) {
         //O(n) search of list. Should be small list so not very expensive
         for(int i = 0; i < userBalanceList.size(); ++i) {
             if(userBalanceList.get(i).getUser().equals(u)) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    private int getUserIndex(String u) {
+        //O(n) search of list. Should be small list so not very expensive
+        for(int i = 0; i < userBalanceList.size(); ++i) {
+            if(userBalanceList.get(i).getUser().toString().equals(u)) {
                 return i;
             }
         }
@@ -54,6 +65,19 @@ public class Lobby {
             //wtf
             return false;
         }
+        userBalanceList.get(index).addToBalance(amount);
+
+        return true;
+    }
+
+    public boolean updateUser(String user, double amount) {
+        //boolean ret = false;
+
+        int index = getUserIndex(user);
+        if(index == -1) {
+            return false;
+        }
+
         userBalanceList.get(index).addToBalance(amount);
 
         return true;

@@ -5,19 +5,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
     Lobby testLobby;
 
     ArrayAdapter<UserBalancePair> userBalancePairArrayAdapter;
+    ListView userBalanceList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         testLobby = new Lobby();
+        testLobby.addUser(new User("User 1"));
+        testLobby.addUser(new User("User 2"));
+        testLobby.updateUser("User 1", 100);
+        testLobby.addUser(new User("User 3"));
+        testLobby.updateUser("User 3", -100);
+
         userBalancePairArrayAdapter = new ArrayAdapter<UserBalancePair>(this, android.R.layout.simple_list_item_1, testLobby.getUserBalanceList());
+        userBalanceList = (ListView)findViewById(R.id.user_balance_list);
+        userBalanceList.setAdapter(userBalancePairArrayAdapter);
     }
 
     @Override

@@ -41,9 +41,9 @@ public class User implements Comparable{
         return friends;
     }
 
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
 
     @Override
     public int compareTo(Object another) {
