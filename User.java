@@ -71,6 +71,11 @@ public class User implements Comparable, Parcelable{
     }
 
     @Override
+    public boolean equals(Object another) {
+        return ((User)another).name.equals(name);
+    }
+
+    @Override
     public String toString() {
         return name;
     }

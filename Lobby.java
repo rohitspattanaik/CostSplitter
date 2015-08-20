@@ -30,6 +30,17 @@ public class Lobby {
         return ret;
     }
 
+//    public boolean addUser(UserBalancePair user) {
+//        boolean ret = false;
+//        try {
+//            ret = userBalanceList.add(user);
+//            Collections.sort(userBalanceList);
+//        } catch (Exception e) {
+//            ret = false;
+//        }
+//        return ret;
+//    }
+
     private int getUserIndex(User u) {
         //O(n) search of list. Should be small list so not very expensive
         for(int i = 0; i < userBalanceList.size(); ++i) {
@@ -83,8 +94,20 @@ public class Lobby {
         return true;
     }
 
+    public void setUserBalanceList(ArrayList<UserBalancePair> list) {
+        //userBalanceList = list;
+        userBalanceList.clear();
+        for(UserBalancePair b : list) {
+            userBalanceList.add(b);
+        }
+    }
+
     public ArrayList<UserBalancePair> getUserBalanceList() {
         return userBalanceList;
+    }
+
+    public ArrayList<Transaction> getTransactionHistory() {
+        return transactionHistory;
     }
 
     public boolean acceptTransaction(Transaction transaction) {
@@ -114,6 +137,11 @@ public class Lobby {
         }
         if(totalBalance != 0.0) {
             //figure out who to give remaining amount to.
+
+            int index = 0;
+            for(UserBalancePair p : userBalanceList) {
+
+            }
 
             totalBalance = 0.0;
         }
