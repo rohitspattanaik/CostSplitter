@@ -25,6 +25,8 @@ public class AddNewUserActivity extends AppCompatActivity {
     EditText userName;
     //EditText balanceAmount;
 
+    String debugTag = "RSP";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

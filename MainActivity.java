@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    //TODO: When using back button with no data, lists wiped clean
+
     Lobby testLobby;
 
     ArrayAdapter<UserBalancePair> userBalancePairArrayAdapter;
@@ -24,7 +26,9 @@ public class MainActivity extends AppCompatActivity {
     ListView transactionHistory;
 
     public static final String EXTRA_USER_BALANCE_LIST = "personal.rohit.costsplitter.USER_BALANCE_LIST";
-    static final int ADD_USER_ACTIVITY = 1;
+
+    static final int ADD_USER_ACTIVITY = 10;
+    static final int ADD_TRANSACTION_ACTIVITY = 20;
 
     //Debugging Stuff
     String debugTag = "RSP";
@@ -35,25 +39,40 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         testLobby = new Lobby();
-//        Log.d(debugTag, "created lobby");
-//        testLobby.addUser(new User("User 1"));
-//        Log.d(debugTag, "added user 1");
-//        testLobby.addUser(new User("User 2"));
-//        Log.d(debugTag, "added user 2");
-//        testLobby.updateUser("User 1", 100);
-//        Log.d(debugTag, "updated user 1");
-//        testLobby.addUser(new User("User 3"));
-//        Log.d(debugTag, "added user 3");
-//        testLobby.updateUser("User 3", -100);
-//        Log.d(debugTag, "updated user 3");
 
-        userBalancePairArrayAdapter = new ArrayAdapter<UserBalancePair>(this, android.R.layout.simple_list_item_1, testLobby.getUserBalanceList());
+        //userBalancePairArrayAdapter = new ArrayAdapter<UserBalancePair>(this, android.R.layout.simple_list_item_1, testLobby.getUserBalanceList());
         userBalanceList = (ListView)findViewById(R.id.user_balance_list);
-        userBalanceList.setAdapter(userBalancePairArrayAdapter);
+        //userBalanceList.setAdapter(userBalancePairArrayAdapter);
         //testLobby.addUser(new User("User 4"));
 
-        transactionHistoryAdapter = new ArrayAdapter<Transaction>(this, android.R.layout.simple_list_item_1, testLobby.getTransactionHistory());
+        //transactionHistoryAdapter = new ArrayAdapter<Transaction>(this, android.R.layout.simple_list_item_1, testLobby.getTransactionHistory());
         transactionHistory = (ListView)findViewById(R.id.transaction_list);
+        //transactionHistory.setAdapter(transactionHistoryAdapter);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        userBalancePairArrayAdapter = new ArrayAdapter<UserBalancePair>(this, android.R.layout.simple_list_item_1, testLobby.getUserBalanceList());
+       // userBalanceList = (ListView)findViewById(R.id.user_balance_list);
+        userBalanceList.setAdapter(userBalancePairArrayAdapter);
+
+        transactionHistoryAdapter = new ArrayAdapter<Transaction>(this, android.R.layout.simple_list_item_1, testLobby.getTransactionHistory());
+        //transactionHistory = (ListView)findViewById(R.id.transaction_list);
+        transactionHistory.setAdapter(transactionHistoryAdapter);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        userBalancePairArrayAdapter = new ArrayAdapter<UserBalancePair>(this, android.R.layout.simple_list_item_1, testLobby.getUserBalanceList());
+        // userBalanceList = (ListView)findViewById(R.id.user_balance_list);
+        userBalanceList.setAdapter(userBalancePairArrayAdapter);
+
+        transactionHistoryAdapter = new ArrayAdapter<Transaction>(this, android.R.layout.simple_list_item_1, testLobby.getTransactionHistory());
+        //transactionHistory = (ListView)findViewById(R.id.transaction_list);
         transactionHistory.setAdapter(transactionHistoryAdapter);
     }
 
@@ -64,7 +83,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addTransaction(View view) {
-        
+        Intent intent = new Intent(this, AddNewTransaction.class);
+        intent.putParcelableArrayListExtra(EXTRA_USER_BALANCE_LIST, testLobby.getUserBalanceList());
+        //startActivityForResult(intent, ADD_TRANSACTION_ACTIVITY);
+        startActivityForResult(intent, ADD_TRANSACTION_ACTIVITY);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        savedInstanceState.putParcelableArrayList("User Balance List", testLobby.getUserBalanceList());
+        savedInstanceState.putParcelableArrayList("Transaction History", testLobby.getTransactionHistory());
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        ArrayList<UserBalancePair> tempUsers = savedInstanceState.getParcelableArrayList("User Balance List");
+        ArrayList<Transaction> tempTrans = savedInstanceState.getParcelableArrayList("Transaction History");
+
+        testLobby.setUserBalanceList(tempUsers);
+        testLobby.setTransactionHistory(tempTrans);
     }
 
     @Override
@@ -100,6 +139,19 @@ public class MainActivity extends AppCompatActivity {
                     testLobby.addUser(temp);
                     userBalancePairArrayAdapter.notifyDataSetChanged();
                 }
+                break;
+            }
+
+            case (ADD_TRANSACTION_ACTIVITY): {
+                if(resultCode == RESULT_OK) {
+                    Transaction transaction = data.getParcelableExtra(AddNewTransaction.NEW_TRANSACTION);
+                    Log.d(debugTag, transaction.getUserAmountDetails().toString());
+                    testLobby.acceptTransaction(transaction);
+                    transactionHistoryAdapter.notifyDataSetChanged();
+                    testLobby.rebalanceLobby();
+                    userBalancePairArrayAdapter.notifyDataSetChanged();
+                }
+                break;
             }
         }
     }
