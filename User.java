@@ -3,6 +3,9 @@ package personal.rohit.costsplitter;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -64,6 +67,21 @@ public class User implements Comparable, Parcelable{
 //    public String getName() {
 //        return name;
 //    }
+
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("name", name);
+            jsonObject.put("friendsList", friends);
+        }
+        catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return jsonObject;
+    }
 
     @Override
     public int compareTo(Object another) {

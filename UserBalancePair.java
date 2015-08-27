@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Pair;
 
+import java.math.BigDecimal;
+
 /**
  * Created by rohit on 8/10/15.
  */
@@ -52,7 +54,7 @@ public class UserBalancePair implements Comparable, Parcelable {
         balance += d;
     }
 
-    public void update(Double d) {
+    public void updateBalance(Double d) {
         balance = d;
     }
 
@@ -68,7 +70,8 @@ public class UserBalancePair implements Comparable, Parcelable {
 
     @Override
     public String toString() {
-        return user.toString() + " : " + balance;
+        Double balanceRounded = new BigDecimal(balance).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue(); //Should probably do this while adjusting actual balances
+        return user.toString() + " : " + balanceRounded;
     }
 
     @Override

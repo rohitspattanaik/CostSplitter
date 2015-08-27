@@ -3,6 +3,7 @@ package personal.rohit.costsplitter;
 import android.util.Pair;
 import android.widget.Toast;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +17,17 @@ public class Lobby {
     private ArrayList<Transaction> transactionHistory;
     private Double totalBalance;
 
+    private static final String USER_BALANCE_SAVE_FILE = "userBalanceList.lst";
+    private static final String TRANSACTION_HISTORY_SAVE_FILE = "transactionHistory.lst";
+    File userBalanceListFile;
+    File transactionHistoryFile;
+
     public Lobby() {
         userBalanceList = new ArrayList<>();
         transactionHistory = new ArrayList<>();
         totalBalance = new Double(0.0);
     }
+
 
     public boolean addUser(User user) {
         boolean ret = false;
