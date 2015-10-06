@@ -12,7 +12,7 @@ public class Transaction implements Comparable, Parcelable {
     private User    initiator;
     private Double  amount;
     private String  description;
-    private Integer     id;
+    private Integer id;
 
     private static int idSeed = 0;
 
@@ -20,6 +20,7 @@ public class Transaction implements Comparable, Parcelable {
         initiator = in.readParcelable(User.class.getClassLoader());
         amount = in.readDouble();
         description = in.readString();
+        id = in.readInt();
     }
 
     public static final Creator<Transaction> CREATOR = new Creator<Transaction>() {
@@ -39,29 +40,29 @@ public class Transaction implements Comparable, Parcelable {
         initiator = new User();
         amount = 0.0;
         description = null;
-        id = idSeed++;
+        id = new Integer(idSeed++);
     }
 
     public Transaction(User u, Double a) {
         initiator = u;
         amount = a;
         description = "No description provided";
-        id = idSeed++;
+        id = new Integer(idSeed++);
     }
 
     public Transaction(User u, Double a, String d) {
         initiator = u;
         amount = a;
         description = d;
-        id = idSeed++;
+        id = new Integer(idSeed++);
     }
 
-    public Transaction(Transaction toCopy) {
-        this.initiator = toCopy.initiator;
-        this.amount = toCopy.amount;
-        this.description = toCopy.description;
-        this.id = toCopy.id;
-    }
+//    public Transaction(Transaction toCopy) {
+//        this.initiator = toCopy.initiator;
+//        this.amount = toCopy.amount;
+//        this.description = toCopy.description;
+//        this.id = toCopy.id;
+//    }
 
 
 
@@ -72,12 +73,18 @@ public class Transaction implements Comparable, Parcelable {
 
     @Override
     public int compareTo(Object another) {
-        return this.id.compareTo(((Transaction)another).id);
+        if(another != null) {
+            return this.id.compareTo(((Transaction)another).id);
+        }
+        return 0; //arbitrary. need to see what works
     }
 
     @Override
     public boolean equals(Object another) {
-        return this.id.equals(((Transaction)another).id);
+        if(another != null) {
+            return this.id.equals(((Transaction)another).id);
+        }
+        return false;
     }
 
     @Override
@@ -90,11 +97,12 @@ public class Transaction implements Comparable, Parcelable {
         dest.writeParcelable(initiator, flags);
         dest.writeDouble(amount);
         dest.writeString(description);
+        dest.writeInt(id);
         //dest.writeSerializable(dateCreated);
     }
 
     @Override public String toString() {
 
-        return "\nUser: " + initiator.toString() + " Amount: " + amount + "\nDescription: " + description;
+        return "\nUser: " + initiator.toString() + "\nAmount: " + amount + "\nDescription: " + description;
     }
 }

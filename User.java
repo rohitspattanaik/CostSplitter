@@ -68,19 +68,45 @@ public class User implements Comparable, Parcelable{
 //        return name;
 //    }
 
-    public JSONObject toJSON() {
-        JSONObject jsonObject = new JSONObject();
+//    public JSONObject toJSON() {
+//        JSONObject jsonObject = new JSONObject();
+//
+//        try {
+//            jsonObject.put("name", name);
+//            jsonObject.put("friendsList", friends);
+//        }
+//        catch (JSONException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//        return jsonObject;
+//    }
 
-        try {
-            jsonObject.put("name", name);
-            jsonObject.put("friendsList", friends);
+    public String getSaveString() { //emulates xml with beginning and closing tags
+        String ret = "User\n" + name;
+
+        ret += "\nfriends";
+        if(friends == null || friends.size() == 0) {
+            ret += "\nnull";
         }
-        catch (JSONException e) {
-            e.printStackTrace();
+        else {
+            //nothing here. not doing friends for now
+        }
+
+        ret += "\nend friends";
+        ret += "\nend User";
+        return ret;
+    }
+
+    public User getUserFromSaveString(String save) {
+        String[] stuff = save.split("\n");
+        if(!stuff[0].equals("User")) {
             return null;
         }
 
-        return jsonObject;
+        //not doing anything with friends
+        return new User(stuff[1]);
     }
 
     @Override

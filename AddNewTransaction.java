@@ -36,13 +36,30 @@ public class AddNewTransaction extends AppCompatActivity {
 
     public void submitTransaction(View view) {
         EditText amountText = (EditText)findViewById(R.id.transaction_amount);
-        Double amount = Double.parseDouble(amountText.getText().toString());
-        if(amount == 0) {
+        EditText descriptionText = (EditText)findViewById(R.id.transaction_description);
+        String inDouble = amountText.getText().toString();
+        if (inDouble.equals("")) {
             Toast.makeText(this, "Transaction Amount Not Specified", Toast.LENGTH_SHORT).show();
             return;
         }
+        Double amount = 0.0;
+        try {
+            amount = Double.parseDouble(inDouble);
+        } catch(Exception e) {
+            Toast.makeText(this, "Error making transaction. Try again (Maybe you forgot the amount?)", Toast.LENGTH_SHORT).show();
+            //record e in error log
+            return;
+        }
+        if(amount == 0.0) {
+            Toast.makeText(this, "Transaction Amount Not Specified", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String inDesciption = descriptionText.getText().toString();
+        if(inDesciption.equals("")) {
+            inDesciption = "No description provided";
+        }
         intent.removeExtra(MainActivity.EXTRA_USER_BALANCE_LIST);
-        intent.putExtra(NEW_TRANSACTION, new Transaction((User) userDropDown.getSelectedItem(), amount));
+        intent.putExtra(NEW_TRANSACTION, new Transaction((User) userDropDown.getSelectedItem(), amount, inDesciption));
         setResult(Activity.RESULT_OK, intent);
         finish();
     }
